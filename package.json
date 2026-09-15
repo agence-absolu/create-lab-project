@@ -11,6 +11,12 @@
   ],
   "license": "UNLICENSED",
   "author": "Agence Absolu",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agence-absolu/create-lab-project.git"
+  },
+  "homepage": "https://github.com/agence-absolu/create-lab-project#readme",
+  "bugs": "https://github.com/agence-absolu/create-lab-project/issues",
   "type": "module",
   "bin": {
     "create-lab-project": "bin/create-lab-project.js"
