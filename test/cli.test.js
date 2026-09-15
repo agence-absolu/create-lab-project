@@ -33,7 +33,7 @@ async function listFiles(dir, prefix = '') {
 
 test('fichiers, rendu et package.json', async () => {
   const dir = path.join(root, 'ma-demo');
-  await exec(process.execPath, [BIN, 'ma-demo', '--yes', '--dir', dir, '--no-git']);
+  await exec(process.execPath, [BIN, 'ma-demo', '--dir', dir, '--no-git']);
 
   assert.deepEqual(await listFiles(dir), [
     '.github/workflows/deploy.yml',
@@ -52,7 +52,8 @@ test('fichiers, rendu et package.json', async () => {
   assert.ok(pkg.devDependencies.vite);
 
   const html = await readFile(path.join(dir, 'index.html'), 'utf8');
-  assert.match(html, /<title>Ma démo<\/title>/);
+  assert.match(html, /<title>Démo Lab Absolu<\/title>/);
+  assert.equal(pkg.description, 'Une démo de plus dans l’univers du Lab Absolu.');
 
   // Aucun {{placeholder}} ne doit subsister ; les ${{ }} de GitHub Actions,
   // eux, ont un espace et ne sont pas concernés.
@@ -62,17 +63,9 @@ test('fichiers, rendu et package.json', async () => {
   }
 });
 
-test('titre et description passés en option, avec git', async () => {
+test('dépôt git initialisé', async () => {
   const dir = path.join(root, 'plate');
-  await exec(process.execPath, [
-    BIN, 'plate', '--title', 'Démo plate', '-d', 'Une page.', '--dir', dir, '--yes',
-  ]);
-
-  const pkg = JSON.parse(await readFile(path.join(dir, 'package.json'), 'utf8'));
-  assert.equal(pkg.description, 'Une page.');
-
-  const html = await readFile(path.join(dir, 'index.html'), 'utf8');
-  assert.match(html, /<title>Démo plate<\/title>/);
+  await exec(process.execPath, [BIN, 'plate', '--dir', dir]);
 
   const entries = await readdir(dir);
   assert.ok(entries.includes('.git'), 'dépôt git initialisé');
@@ -80,12 +73,12 @@ test('titre et description passés en option, avec git', async () => {
 
 test('refuse un slug invalide', async () => {
   await assert.rejects(
-    exec(process.execPath, [BIN, 'Ma_Demo', '--yes', '--dir', path.join(root, 'x')]),
+    exec(process.execPath, [BIN, 'Ma_Demo', '--dir', path.join(root, 'x')]),
     /Slug invalide/
   );
 });
 
 test('refuse un dossier non vide', async () => {
   const dir = path.join(root, 'plate'); // créé par le test précédent
-  await assert.rejects(exec(process.execPath, [BIN, 'plate', '--yes', '--dir', dir]), /n'est pas vide/);
+  await assert.rejects(exec(process.execPath, [BIN, 'plate', '--dir', dir]), /n'est pas vide/);
 });

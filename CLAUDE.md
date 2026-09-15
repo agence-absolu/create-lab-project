@@ -1,13 +1,13 @@
 # create-lab-project
 
 Générateur `npm create @absolu/lab-project` : initialise une démo Vite prête
-pour le lab d'Absolu (lab.agence-absolu.com/<slug>/), sur le modèle de
-`lab-drill`. Sans dépendance, Node ≥ 22. Voir le README pour la structure.
+pour le lab d'Absolu (lab.agence-absolu.com/<slug>/). Sans dépendance,
+Node ≥ 22. Voir le README pour la structure.
 
 - Le gabarit (`template/`) est rendu par `{{clé}}` (`slug`, `title`,
   `description`, `year`) ; `_gitignore` y tient lieu de `.gitignore`.
-- `vite.config.js` et le workflow du gabarit sont ceux de `lab-drill` :
-  génériques par construction, ils ne doivent rien nommer.
+- `vite.config.js` et le workflow du gabarit sont génériques par
+  construction : ils ne doivent rien nommer.
 - `npm test` génère un projet dans un dossier temporaire et vérifie le
   résultat ; après une modification du gabarit, faire aussi un `vite build`
   du projet généré.

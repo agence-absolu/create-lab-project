@@ -16,8 +16,12 @@ const TEMPLATE_DIR = path.join(import.meta.dirname, '../template');
 // Format imposé par le hub : c'est le slug qui donne l'URL (lab.agence-absolu.com/<slug>/).
 export const SLUG = /^[a-z0-9][a-z0-9-]*$/;
 
-// Version validée sur la démo de référence (lab-drill).
+// Version de Vite validée sur les démos du lab.
 const VITE = '^7.1.0';
+
+// Titre et description génériques : l'auteur les remplace dans le projet généré.
+export const TITLE = 'Démo Lab Absolu';
+export const DESCRIPTION = 'Une démo de plus dans l’univers du Lab Absolu.';
 
 // npm retire tout `.gitignore` d'un paquet publié : le gabarit le porte sous un
 // autre nom, restitué à la copie.
@@ -56,7 +60,7 @@ async function isEmptyDir(dir) {
   return entries.every((name) => name.startsWith('.'));
 }
 
-export async function scaffold({ dir, slug, title, description, git = true }) {
+export async function scaffold({ dir, slug, title = TITLE, description = DESCRIPTION, git = true }) {
   if (!SLUG.test(slug)) {
     throw new Error(`Slug invalide « ${slug} » : minuscules, chiffres et tirets, sans tiret initial.`);
   }
