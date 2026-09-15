@@ -1,8 +1,14 @@
 {
   "name": "@absolu/create-lab-project",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Initialise une démo Vite prête à être publiée sur lab.agence-absolu.com",
-  "keywords": ["create", "scaffold", "vite", "lab", "absolu"],
+  "keywords": [
+    "create",
+    "scaffold",
+    "vite",
+    "lab",
+    "absolu"
+  ],
   "license": "UNLICENSED",
   "author": "Agence Absolu",
   "type": "module",
