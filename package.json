@@ -1,6 +1,6 @@
 {
   "name": "@absolu/create-lab-project",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Initialise une démo Vite prête à être publiée sur lab.agence-absolu.com",
   "keywords": [
     "create",
