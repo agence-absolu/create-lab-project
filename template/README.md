@@ -51,6 +51,22 @@ Sans le dernier, le workflow relève l'empreinte du serveur au premier contact
 et la croit sur parole. Un secret de dépôt du même nom, s'il en existe un,
 prime sur celui de l'organisation.
 
+**Mot de passe (facultatif).** Un secret `LAB_PAGE_PASSWORD` créé dans le
+dépôt (pas dans l'organisation) protège la démo : le déploiement en dépose
+l'empreinte scrypt dans `.access`, et le hub demande alors identifiant
+(libre) et mot de passe avant de servir quoi que ce soit. Le mot de passe
+n'apparaît ni dans le code ni sur le serveur. Sans ce secret, la démo est
+publique ; le dépôt, lui, reste public dans tous les cas.
+
+Pour que la démo ne soit jamais en ligne sans protection, créer le dépôt sans
+pousser, poser le secret, puis pousser :
+
+```bash
+gh repo create agence-absolu/lab-{{slug}} --public --source=. --remote=origin
+gh secret set LAB_PAGE_PASSWORD   # saisie masquée, demandée après Entrée
+git push -u origin main
+```
+
 Pourquoi un mot de passe et pas une clé : chez Infomaniak, l'authentification
 par clé n'est pas disponible sur un site Node.js et le port FTP est filtré.
 

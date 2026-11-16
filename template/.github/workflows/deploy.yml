@@ -13,6 +13,9 @@
 #   LAB_SSH_PASSWORD     mot de passe
 #   LAB_SSH_KNOWN_HOSTS  facultatif — sortie de `ssh-keyscan <hôte>`, pour
 #                        épingler l'empreinte du serveur (voir plus bas)
+#   LAB_PAGE_PASSWORD    facultatif, secret du dépôt — protège la démo par mot
+#                        de passe (le hub demande alors identifiant et mot de
+#                        passe ; l'identifiant est libre)
 
 name: Déploiement lab
 
@@ -45,6 +48,26 @@ jobs:
       # vite.config.js déduit déjà la base du nom npm ; on la passe malgré tout
       # pour que le workflow reste explicite sur ce qu'il produit.
       - run: BASE_PATH="/${{ steps.meta.outputs.slug }}/" npm run build
+
+      # Mot de passe : seule son empreinte scrypt part sur le serveur, dans
+      # dist/.access, fichier caché que le hub lit sans jamais le servir. Sans
+      # secret, pas de fichier : la démo est publique (et --delete retire un
+      # .access précédent).
+      - name: Accès protégé
+        env:
+          LAB_PAGE_PASSWORD: ${{ secrets.LAB_PAGE_PASSWORD }}
+        run: |
+          if [ -z "$LAB_PAGE_PASSWORD" ]; then
+            echo "Pas de LAB_PAGE_PASSWORD : démo publique."
+            exit 0
+          fi
+          node -e '
+            const { randomBytes, scryptSync } = require("node:crypto");
+            const salt = randomBytes(16);
+            const hash = scryptSync(process.env.LAB_PAGE_PASSWORD, salt, 32);
+            require("node:fs").writeFileSync("dist/.access", `scrypt$${salt.toString("base64")}$${hash.toString("base64")}\n`);
+          '
+          echo "Démo protégée par mot de passe."
 
       - name: Connaître le serveur
         env:
